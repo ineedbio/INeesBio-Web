@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>INeedPOSN — Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    :root{--bg:#050505;--s:#0d0d0d;--s2:#141414;--b:rgba(255,255,255,.07);--b2:rgba(255,255,255,.13);--t:#f0f0f0;--ts:#999;--tt:#555;--gold:#ffd60a;--bio:#30d158;--chem:#0a84ff;--com:#bf5af2;--warm:#ff9f0a;--red:#ff453a;--green:#30d158;}
+    body{background:var(--bg);color:var(--t);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh;}
+
+    /* LOGIN */
+    .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+    .login-box{background:var(--s);border:1px solid var(--b2);border-radius:24px;padding:48px 44px;width:100%;max-width:400px;text-align:center;}
+    .login-logo{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:6px;}
+    .login-logo span{color:var(--gold);}
+    .login-sub{font-size:.78rem;color:var(--ts);margin-bottom:32px;}
+    .lf{margin-bottom:14px;text-align:left;}
+    .lf label{font-size:.72rem;font-weight:600;color:var(--ts);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:6px;}
+    .lf input{width:100%;padding:11px 14px;background:#161616;border:1px solid var(--b2);border-radius:10px;color:var(--t);font-size:.9rem;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;}
+    .lf input:focus{border-color:rgba(255,255,255,.28);}
+    .btn-login{width:100%;padding:13px;background:var(--gold);color:#000;border:none;border-radius:12px;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;margin-top:8px;}
+    .btn-login:hover{background:#e5c009;}
+    .login-err{font-size:.75rem;color:var(--red);margin-top:10px;display:none;}
+    .login-err.show{display:block;}
+
+    /* APP */
+    .app{display:none;min-height:100vh;flex-direction:column;}
+    .app.on{display:flex;}
+    .topbar{height:56px;background:var(--s);border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:50;}
+    .topbar-logo{font-family:'Playfair Display',serif;font-size:1.1rem;}
+    .topbar-logo span{color:var(--gold);}
+    .top-r{display:flex;align-items:center;gap:14px;}
+    .ttag{padding:4px 10px;background:rgba(255,214,10,.1);border:1px solid rgba(255,214,10,.25);border-radius:40px;font-size:.68rem;font-weight:600;color:var(--gold);letter-spacing:.06em;text-transform:uppercase;}
+    .btn-logout{padding:6px 14px;background:none;border:1px solid var(--b2);border-radius:8px;color:var(--ts);font-size:.75rem;cursor:pointer;transition:all .2s;}
+    .btn-logout:hover{border-color:var(--red);color:var(--red);}
+    .content{padding:28px;flex:1;max-width:1400px;margin:0 auto;width:100%;}
+
+    /* STATS */
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:28px;}
+    .sc{background:var(--s);border:1px solid var(--b);border-radius:16px;padding:20px 22px;}
+    .sl{font-size:.7rem;font-weight:600;color:var(--tt);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;}
+    .sv{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;}
+    .ssub{font-size:.72rem;color:var(--ts);margin-top:4px;}
+
+    /* TOOLBAR */
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px;}
+    .search-wrap{position:relative;flex:1;min-width:200px;}
+    .search-wrap input{width:100%;padding:9px 14px 9px 36px;background:var(--s);border:1px solid var(--b2);border-radius:10px;color:var(--t);font-size:.83rem;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;}
+    .search-wrap input:focus{border-color:rgba(255,255,255,.25);}
+    .si{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.85rem;color:var(--tt);}
+    .fb{padding:9px 14px;background:var(--s);border:1px solid var(--b2);border-radius:10px;color:var(--ts);font-size:.78rem;cursor:pointer;transition:all .2s;white-space:nowrap;}
+    .fb.on{background:rgba(255,255,255,.06);color:var(--t);border-color:rgba(255,255,255,.25);}
+    .fb:hover{border-color:rgba(255,255,255,.2);color:var(--t);}
+    .btn-exp{padding:9px 14px;background:rgba(255,214,10,.1);border:1px solid rgba(255,214,10,.25);border-radius:10px;color:var(--gold);font-size:.78rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;}
+    .btn-exp:hover{background:rgba(255,214,10,.2);}
+    .btn-refresh{padding:9px 14px;background:rgba(255,255,255,.04);border:1px solid var(--b2);border-radius:10px;color:var(--ts);font-size:.78rem;cursor:pointer;transition:all .2s;white-space:nowrap;}
+    .btn-refresh:hover{color:var(--t);border-color:rgba(255,255,255,.2);}
+
+    /* TABLE */
+    .tw{background:var(--s);border:1px solid var(--b);border-radius:18px;overflow:hidden;}
+    .th2{padding:14px 20px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;}
+    .tt2{font-size:.82rem;font-weight:600;}
+    .tc{font-size:.72rem;color:var(--tt);}
+    table{width:100%;border-collapse:collapse;}
+    th{padding:11px 14px;text-align:left;font-size:.67rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--tt);border-bottom:1px solid var(--b);white-space:nowrap;}
+    td{padding:12px 14px;font-size:.79rem;border-bottom:1px solid var(--b);vertical-align:middle;}
+    tr:last-child td{border-bottom:none;}
+    tr:hover td{background:rgba(255,255,255,.02);}
+    .oid{font-family:monospace;font-size:.7rem;color:var(--ts);}
+    .oname{font-weight:600;}
+    .oemail{font-size:.71rem;color:var(--ts);}
+    .bc{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:40px;font-size:.64rem;font-weight:600;white-space:nowrap;}
+    .bio-b{background:rgba(48,209,88,.1);color:var(--bio);}
+    .chem-b{background:rgba(10,132,255,.1);color:var(--chem);}
+    .com-b{background:rgba(191,90,242,.1);color:var(--com);}
+    .bs{display:inline-block;padding:4px 10px;border-radius:40px;font-size:.64rem;font-weight:600;letter-spacing:.04em;cursor:pointer;transition:all .15s;}
+    .s-pending{background:rgba(255,159,10,.12);color:var(--warm);border:1px solid rgba(255,159,10,.25);}
+    .s-paid{background:rgba(48,209,88,.10);color:var(--green);border:1px solid rgba(48,209,88,.25);}
+    .s-rejected{background:rgba(255,69,58,.10);color:var(--red);border:1px solid rgba(255,69,58,.25);}
+    .ar{display:flex;gap:5px;align-items:center;}
+    .ba{padding:5px 9px;border-radius:7px;font-size:.69rem;cursor:pointer;transition:all .15s;border:1px solid;}
+    .ba-slip{background:var(--s2);border-color:var(--b2);color:var(--ts);}
+    .ba-slip:hover{color:var(--t);border-color:rgba(255,255,255,.25);}
+    .ba-ok{background:rgba(48,209,88,.08);border-color:rgba(48,209,88,.2);color:var(--bio);}
+    .ba-ok:hover{background:rgba(48,209,88,.18);}
+    .ba-no{background:rgba(255,69,58,.08);border-color:rgba(255,69,58,.2);color:var(--red);}
+    .ba-no:hover{background:rgba(255,69,58,.15);}
+    .empty{padding:60px 20px;text-align:center;color:var(--tt);font-size:.85rem;}
+    .empty .big{font-size:2.5rem;margin-bottom:12px;}
+
+    /* SLIP MODAL */
+    .smodal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.9);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s;}
+    .smodal.open{opacity:1;pointer-events:all;}
+    .smi{background:var(--s);border:1px solid var(--b2);border-radius:20px;padding:20px;max-width:440px;width:100%;transform:scale(.95);transition:transform .25s;}
+    .smodal.open .smi{transform:scale(1);}
+    .smh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+    .smt{font-size:.88rem;font-weight:600;}
+    .smc{background:none;border:none;cursor:pointer;color:var(--ts);font-size:1.2rem;}
+    .smodal img{width:100%;border-radius:12px;}
+
+    /* TOAST */
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1c1c1c;border:1px solid var(--b2);border-radius:40px;padding:10px 22px;font-size:.8rem;font-weight:500;opacity:0;transition:all .3s;z-index:300;white-space:nowrap;}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+    .toast.g{border-color:rgba(48,209,88,.3);color:var(--bio);}
+    .toast.r{border-color:rgba(255,69,58,.3);color:var(--red);}
+
+    /* Source indicator */
+    .src-tag{font-size:.6rem;padding:2px 6px;border-radius:4px;font-weight:600;letter-spacing:.04em;}
+    .src-sheet{background:rgba(10,132,255,.12);color:var(--chem);}
+    .src-local{background:rgba(255,214,10,.1);color:var(--gold);}
+
+    @media(max-width:768px){
+      .content{padding:16px;}
+      th:nth-child(4),td:nth-child(4),th:nth-child(5),td:nth-child(5){display:none;}
+      .topbar{padding:0 16px;}
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  /* ═══════════════════════════════════════════════
+     ⚙️  CONFIG — ใส่ค่าเดียวกับ index.html
+     ═══════════════════════════════════════════════ */
+  const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+
+  /* รหัสผ่าน Admin — เปลี่ยนได้ที่นี่ */
+  const ADMIN_USERS = { admin: 'ineedposn2568' };
+</script>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-box">
+    <div class="login-logo">I<span>Need</span>POSN</div>
+    <div class="login-sub">Admin Dashboard · ระบบหลังบ้าน</div>
+    <div class="lf"><label>Username</label><input type="text" id="lu" placeholder="admin" autocomplete="username"></div>
+    <div class="lf"><label>Password</label><input type="password" id="lp" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <button class="btn-login" onclick="doLogin()">เข้าสู่ระบบ</button>
+    <div class="login-err" id="lerr">Username หรือ Password ไม่ถูกต้อง</div>
+    <div style="margin-top:18px;font-size:.68rem;color:var(--tt)">Default: admin / ineedposn2568</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="appWrap">
+  <div class="topbar">
+    <div class="topbar-logo">I<span>Need</span>POSN</div>
+    <div class="top-r">
+      <span class="ttag">⚙ Admin</span>
+      <a href="index.html" style="color:var(--ts);font-size:.75rem;text-decoration:none">← หน้าหลัก</a>
+      <button class="btn-logout" onclick="logout()">ออกจากระบบ</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="stats" id="statsGrid">
+      <div class="sc"><div class="sl">ออเดอร์ทั้งหมด</div><div class="sv" id="stTotal" style="color:var(--t)">0</div><div class="ssub">รายการ</div></div>
+      <div class="sc"><div class="sl">รอตรวจสอบ</div><div class="sv" id="stPend" style="color:var(--warm)">0</div><div class="ssub">รายการ</div></div>
+      <div class="sc"><div class="sl">ชีววิทยา</div><div class="sv" id="stBio" style="color:var(--bio)">0</div><div class="ssub">ผู้สมัคร</div></div>
+      <div class="sc"><div class="sl">เคมี</div><div class="sv" id="stChem" style="color:var(--chem)">0</div><div class="ssub">ผู้สมัคร</div></div>
+      <div class="sc"><div class="sl">คอมพิวเตอร์</div><div class="sv" id="stCom" style="color:var(--com)">0</div><div class="ssub">ผู้สมัคร</div></div>
+      <div class="sc"><div class="sl">รายได้ (ยืนยัน)</div><div class="sv" id="stRev" style="color:var(--gold)">฿0</div><div class="ssub">บาท</div></div>
+    </div>
+    <div class="toolbar">
+      <div class="search-wrap"><span class="si">🔍</span><input type="text" placeholder="ค้นหาชื่อ อีเมล เบอร์ ORDER ID…" id="sq" oninput="renderTable()"></div>
+      <button class="fb on" onclick="setF('all',this)">ทั้งหมด</button>
+      <button class="fb" onclick="setF('pending',this)">🟡 รอตรวจ</button>
+      <button class="fb" onclick="setF('paid',this)">🟢 ยืนยัน</button>
+      <button class="fb" onclick="setF('rejected',this)">🔴 ปฏิเสธ</button>
+      <button class="fb" onclick="setF('bio',this)">🧬 ชีวะ</button>
+      <button class="fb" onclick="setF('chem',this)">⚗️ เคมี</button>
+      <button class="fb" onclick="setF('com',this)">💻 คอม</button>
+      <button class="btn-refresh" onclick="loadOrders()">↻ รีเฟรช</button>
+      <button class="btn-exp" onclick="exportCSV()">📥 Export CSV</button>
+    </div>
+    <div class="tw">
+      <div class="th2"><div class="tt2">รายการสั่งซื้อ</div><div class="tc" id="tcount">0 รายการ</div></div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr>
+            <th>ORDER ID</th><th>ชื่อ-นามสกุล</th><th>คอร์ส</th>
+            <th>ราคา</th><th>วันที่</th><th>เบอร์ / LINE</th>
+            <th>โรงเรียน</th><th>สถานะ</th><th>จัดการ</th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIP MODAL -->
+<div class="smodal" id="slipModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="smi">
+    <div class="smh"><div class="smt">สลิปการโอนเงิน</div><button class="smc" onclick="document.getElementById('slipModal').classList.remove('open')">✕</button></div>
+    <img id="slipImg" src="" alt="slip">
+    <div style="margin-top:10px;font-size:.73rem;color:var(--ts);text-align:center" id="slipInfo"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  let filt='all', allOrders=[];
+
+  // ── LOGIN ──
+  function doLogin(){
+    const u=document.getElementById('lu').value.trim();
+    const p=document.getElementById('lp').value;
+    if(ADMIN_USERS[u]===p){
+      document.getElementById('loginWrap').style.display='none';
+      document.getElementById('appWrap').classList.add('on');
+      loadOrders();
+    } else {
+      document.getElementById('lerr').classList.add('show');
+    }
+  }
+  function logout(){
+    document.getElementById('loginWrap').style.display='flex';
+    document.getElementById('appWrap').classList.remove('on');
+    document.getElementById('lp').value='';
+  }
+  document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('loginWrap').style.display!=='none')doLogin();});
+
+  // ── LOAD ORDERS (Sheet + localStorage merged) ──
+  async function loadOrders(){
+    let sheetOrders=[], localOrders=[];
+
+    // From localStorage (always available)
+    localOrders=JSON.parse(localStorage.getItem('inp_orders')||'[]').map(o=>({...o,_src:'local'}));
+
+    // From Apps Script (if configured)
+    if(SCRIPT_URL&&SCRIPT_URL!=='YOUR_APPS_SCRIPT_URL_HERE'){
+      try{
+        const res=await fetch(SCRIPT_URL+'?action=get_orders',{mode:'cors'});
+        const json=await res.json();
+        if(json.ok) sheetOrders=json.orders.map(o=>({...o,_src:'sheet'}));
+      }catch(e){console.warn('Sheet fetch failed:',e);}
+    }
+
+    // Merge: Sheet data takes priority; deduplicate by order ID
+    const seen=new Set();
+    const merged=[];
+    [...sheetOrders,...localOrders].forEach(o=>{
+      if(!seen.has(o.id)){seen.add(o.id);merged.push(o);}
+    });
+    // Sort newest first
+    merged.sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp));
+    allOrders=merged;
+    renderAll();
+    showToast('โหลดข้อมูลสำเร็จ · '+merged.length+' ออเดอร์','g');
+  }
+
+  function renderAll(){renderStats();renderTable();}
+
+  function renderStats(){
+    const o=allOrders;
+    document.getElementById('stTotal').textContent=o.length;
+    document.getElementById('stPend').textContent=o.filter(x=>x.status==='pending').length;
+    document.getElementById('stBio').textContent=o.filter(x=>x.courseKey==='bio').length;
+    document.getElementById('stChem').textContent=o.filter(x=>x.courseKey==='chem').length;
+    document.getElementById('stCom').textContent=o.filter(x=>x.courseKey==='com').length;
+    document.getElementById('stRev').textContent='฿'+o.filter(x=>x.status==='paid').reduce((s,x)=>s+x.price,0).toLocaleString();
+  }
+
+  function setF(f,btn){filt=f;document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderTable();}
+
+  function renderTable(){
+    const q=document.getElementById('sq').value.toLowerCase();
+    const filtered=allOrders.filter(o=>{
+      const mq=!q||[o.name,o.email,o.phone,o.id,o.school||''].some(v=>(v||'').toLowerCase().includes(q));
+      const mf=filt==='all'?true:filt==='pending'||filt==='paid'||filt==='rejected'?o.status===filt:o.courseKey===filt;
+      return mq&&mf;
+    });
+    document.getElementById('tcount').textContent=filtered.length+' รายการ';
+    const ico={bio:'🧬',chem:'⚗️',com:'💻'};
+    const tb=document.getElementById('tbody');
+    if(!filtered.length){tb.innerHTML=`<tr><td colspan="9"><div class="empty"><div class="big">📭</div>ไม่พบรายการที่ตรงเงื่อนไข</div></td></tr>`;return;}
+    tb.innerHTML=filtered.map(o=>{
+      const dt=new Date(o.timestamp);
+      const ds=dt.toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'2-digit'})+' '+dt.toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});
+      const sl={pending:'⏳ รอตรวจ',paid:'✅ ยืนยัน',rejected:'❌ ปฏิเสธ'}[o.status]||o.status;
+      const hasSlip=!!(o.slip||o.slipUrl);
+      const srcTag=o._src==='sheet'?'<span class="src-tag src-sheet">Sheet</span>':'<span class="src-tag src-local">Local</span>';
+      return `<tr>
+        <td><div class="oid">${o.id}</div>${srcTag}</td>
+        <td><div class="oname">${o.name}</div><div class="oemail">${o.email}</div></td>
+        <td><span class="bc ${o.courseKey}-b">${ico[o.courseKey]||''} ${(o.course||'').replace('สอวน. ','').replace(' ค่าย 1','')}</span></td>
+        <td>฿${(o.price||0).toLocaleString()}</td>
+        <td style="font-size:.71rem;color:var(--ts);white-space:nowrap">${ds}</td>
+        <td style="font-size:.71rem"><div>${o.phone||'—'}</div><div style="color:var(--tt)">${o.line||'—'}</div></td>
+        <td style="font-size:.71rem;color:var(--ts);max-width:150px">${o.school||'—'}</td>
+        <td><span class="bs s-${o.status}" onclick="cycleStatus('${o.id}')">${sl}</span></td>
+        <td><div class="ar">
+          ${hasSlip?`<button class="ba ba-slip" onclick="viewSlip('${o.id}')">🖼 สลิป</button>`:'<span style="font-size:.65rem;color:var(--tt)">—</span>'}
+          ${o.status!=='paid'?`<button class="ba ba-ok" onclick="setStatus('${o.id}','paid')">✓</button>`:''}
+          ${o.status!=='rejected'?`<button class="ba ba-no" onclick="setStatus('${o.id}','rejected')">✕</button>`:''}
+        </div></td>
+      </tr>`;
+    }).join('');
+  }
+
+  async function setStatus(id,status){
+    // Update locally
+    const o=allOrders.find(x=>x.id===id);
+    if(!o)return;
+    o.status=status;
+    // Update localStorage
+    const local=JSON.parse(localStorage.getItem('inp_orders')||'[]');
+    const li=local.findIndex(x=>x.id===id);
+    if(li>=0)local[li].status=status;
+    localStorage.setItem('inp_orders',JSON.stringify(local));
+    // Update Apps Script
+    if(SCRIPT_URL&&SCRIPT_URL!=='YOUR_APPS_SCRIPT_URL_HERE'){
+      try{
+        await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'update_status',orderId:id,status})});
+      }catch(e){console.warn(e);}
+    }
+    renderAll();
+    const msg={paid:'✅ ยืนยันออเดอร์แล้ว',rejected:'❌ ปฏิเสธออเดอร์แล้ว'};
+    const col={paid:'g',rejected:'r'};
+    showToast(msg[status],col[status]);
+  }
+
+  function cycleStatus(id){
+    const o=allOrders.find(x=>x.id===id);
+    if(!o)return;
+    const cycle={pending:'paid',paid:'rejected',rejected:'pending'};
+    setStatus(id,cycle[o.status]||'pending');
+  }
+
+  function viewSlip(id){
+    const o=allOrders.find(x=>x.id===id);
+    if(!o)return;
+    const src=o.slip||o.slipUrl;
+    if(!src)return;
+    document.getElementById('slipImg').src=src;
+    document.getElementById('slipInfo').textContent=o.id+' · '+o.name+' · '+(o.course||'');
+    document.getElementById('slipModal').classList.add('open');
+  }
+
+  function exportCSV(){
+    const H=['ORDER ID','ชื่อ','อีเมล','เบอร์','LINE','โรงเรียน','คอร์ส','ราคา','สถานะ','วันที่','แหล่งข้อมูล'];
+    const rows=allOrders.map(o=>[
+      o.id,o.name,o.email,o.phone,o.line||'',o.school||'',
+      o.course,o.price,
+      {pending:'รอตรวจ',paid:'ยืนยัน',rejected:'ปฏิเสธ'}[o.status]||o.status,
+      new Date(o.timestamp).toLocaleString('th-TH'),
+      o._src==='sheet'?'Google Sheet':'Local'
+    ]);
+    const csv=[H,...rows].map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'}));
+    a.download='ineedposn_orders_'+new Date().toISOString().slice(0,10)+'.csv';
+    a.click();
+    showToast('📥 Export CSV สำเร็จ','g');
+  }
+
+  let tt;
+  function showToast(msg,type=''){
+    const t=document.getElementById('toast');
+    t.textContent=msg;t.className='toast show '+(type||'');
+    clearTimeout(tt);tt=setTimeout(()=>{t.className='toast';},2600);
+  }
+</script>
+</body>
+</html>

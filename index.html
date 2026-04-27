@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>INeedPOSN — เตรียมพร้อมสู่ความเป็นเลิศ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Noto+Serif+Thai:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #000; --surface: #0a0a0a; --surface2: #111;
+      --border: rgba(255,255,255,0.08); --border-hover: rgba(255,255,255,0.18);
+      --text: #f5f5f7; --text-secondary: #a1a1a6; --text-tertiary: #6e6e73;
+      --accent-bio: #30d158; --accent-chem: #0a84ff; --accent-com: #bf5af2;
+      --gold: #ffd60a; --warm: #ff9f0a;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans','Noto Serif Thai',sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 5vw; height: 52px; display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.72); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: 'Playfair Display',serif; font-size: 1.2rem; letter-spacing: .04em; }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2.2rem; align-items: center; }
+    .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: .8rem; transition: color .2s; }
+    .nav-links a:hover { color: var(--text); }
+    .nav-admin { padding: 6px 14px; border: 1px solid rgba(255,214,10,.3); border-radius: 40px; color: var(--gold)!important; font-size: .72rem!important; font-weight: 600!important; letter-spacing: .06em!important; text-transform: uppercase; }
+    .nav-admin:hover { background: rgba(255,214,10,.08)!important; }
+    .hero { min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 100px 5vw 60px; position: relative; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; z-index: 0; background: radial-gradient(ellipse 80% 60% at 50% -10%,rgba(48,209,88,.10) 0%,transparent 60%), radial-gradient(ellipse 60% 40% at 20% 80%,rgba(10,132,255,.08) 0%,transparent 55%), radial-gradient(ellipse 50% 40% at 80% 90%,rgba(191,90,242,.08) 0%,transparent 55%); }
+    .hero-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border: 1px solid rgba(255,214,10,.3); border-radius: 40px; font-size: .72rem; font-weight: 500; color: var(--gold); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 2rem; background: rgba(255,214,10,.06); animation: fadeUp .8s ease both; }
+    .hero-badge::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--gold); animation:pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .hero h1 { font-family:'Playfair Display',serif; font-size:clamp(2.8rem,7vw,5.5rem); font-weight:700; line-height:1.08; letter-spacing:-.02em; max-width:820px; animation:fadeUp .8s .1s ease both; }
+    .hero h1 em { font-style:normal; color:var(--gold); }
+    .hero-sub { margin-top:1.4rem; font-size:clamp(.95rem,1.8vw,1.15rem); color:var(--text-secondary); font-weight:300; max-width:520px; line-height:1.7; animation:fadeUp .8s .2s ease both; }
+    .hero-cta { margin-top:2.5rem; display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; animation:fadeUp .8s .3s ease both; }
+    .btn-primary { padding:14px 32px; background:var(--text); color:#000; border:none; border-radius:980px; font-size:.9rem; font-weight:600; cursor:pointer; transition:all .2s; text-decoration:none; display:inline-block; }
+    .btn-primary:hover { background:#e0e0e0; transform:scale(1.02); }
+    .btn-ghost { padding:14px 32px; background:transparent; color:var(--text); border:1px solid var(--border-hover); border-radius:980px; font-size:.9rem; font-weight:500; cursor:pointer; transition:all .2s; text-decoration:none; display:inline-block; }
+    .btn-ghost:hover { border-color:rgba(255,255,255,.4); }
+    .hero-note { margin-top:1.2rem; font-size:.75rem; color:var(--text-tertiary); animation:fadeUp .8s .4s ease both; }
+    .hero-note strong { color:var(--warm); }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+    section { padding:100px 5vw; }
+    .section-eyebrow { font-size:.72rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--text-tertiary); margin-bottom:1rem; }
+    .section-title { font-family:'Playfair Display',serif; font-size:clamp(2rem,4vw,3rem); font-weight:600; line-height:1.15; }
+    #courses { background:var(--surface); }
+    .courses-header { text-align:center; margin-bottom:4rem; }
+    .course-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1.5px; max-width:1200px; margin:0 auto; border:1.5px solid var(--border); border-radius:24px; overflow:hidden; }
+    .course-card { background:var(--surface2); padding:44px 40px 40px; transition:background .3s; }
+    .course-card:hover { background:#161616; }
+    .course-num { font-size:.7rem; font-weight:600; letter-spacing:.15em; text-transform:uppercase; margin-bottom:1.5rem; }
+    .card-bio .course-num{color:var(--accent-bio);} .card-chem .course-num{color:var(--accent-chem);} .card-com .course-num{color:var(--accent-com);}
+    .course-icon { width:52px; height:52px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.5rem; margin-bottom:1.5rem; }
+    .card-bio .course-icon{background:rgba(48,209,88,.12);} .card-chem .course-icon{background:rgba(10,132,255,.12);} .card-com .course-icon{background:rgba(191,90,242,.12);}
+    .course-name { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:600; line-height:1.2; margin-bottom:.5rem; }
+    .course-subtitle { font-size:.82rem; color:var(--text-secondary); margin-bottom:1.8rem; line-height:1.6; }
+    .tutor-row { display:flex; align-items:center; gap:10px; margin-bottom:1.8rem; }
+    .tutor-avatar { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.6rem; font-weight:700; flex-shrink:0; }
+    .card-bio .tutor-avatar{background:rgba(48,209,88,.2);color:var(--accent-bio);} .card-chem .tutor-avatar{background:rgba(10,132,255,.2);color:var(--accent-chem);} .card-com .tutor-avatar{background:rgba(191,90,242,.2);color:var(--accent-com);}
+    .tutor-info .name{font-size:.82rem;font-weight:600;} .tutor-info .role{font-size:.72rem;color:var(--text-tertiary);}
+    .course-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:2rem; }
+    .tag { padding:4px 10px; border-radius:40px; font-size:.68rem; font-weight:500; border:1px solid var(--border); color:var(--text-secondary); }
+    .price-row { display:flex; align-items:baseline; gap:10px; margin-bottom:1.2rem; }
+    .price-current { font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; }
+    .card-bio .price-current{color:var(--accent-bio);} .card-chem .price-current{color:var(--accent-chem);} .card-com .price-current{color:var(--accent-com);}
+    .price-old { font-size:.82rem; color:var(--text-tertiary); text-decoration:line-through; }
+    .price-deadline { font-size:.72rem; color:var(--warm); margin-bottom:1.5rem; }
+    .btn-card { display:block; width:100%; padding:13px; border-radius:12px; text-align:center; font-size:.85rem; font-weight:600; cursor:pointer; border:none; transition:all .2s; font-family:'DM Sans',sans-serif; }
+    .card-bio .btn-card{background:rgba(48,209,88,.15);color:var(--accent-bio);} .card-bio .btn-card:hover{background:rgba(48,209,88,.25);}
+    .card-chem .btn-card{background:rgba(10,132,255,.15);color:var(--accent-chem);} .card-chem .btn-card:hover{background:rgba(10,132,255,.25);}
+    .card-com .btn-card{background:rgba(191,90,242,.15);color:var(--accent-com);} .card-com .btn-card:hover{background:rgba(191,90,242,.25);}
+    .special-offer { font-size:.72rem; color:var(--warm); text-align:center; margin-top:.6rem; }
+    #curriculum { background:var(--bg); }
+    .curriculum-wrap { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px; }
+    .curr-header { padding:28px 28px 20px; border-bottom:1px solid var(--border); display:flex; gap:12px; align-items:center; }
+    .curr-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+    .curr-subject-title { font-family:'Playfair Display',serif; font-size:1rem; font-weight:600; }
+    .curr-books { padding:20px 28px 28px; }
+    .curr-book { margin-bottom:1.4rem; }
+    .curr-book-name { font-size:.78rem; font-weight:600; color:var(--text-secondary); margin-bottom:.5rem; font-style:italic; }
+    .curr-topic { font-size:.72rem; color:var(--text-tertiary); line-height:2; display:flex; flex-direction:column; }
+    .curr-topic span::before { content:'— '; opacity:.4; }
+    #instructors { background:var(--surface); }
+    .instructors-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5px; max-width:1000px; margin:3rem auto 0; border:1.5px solid var(--border); border-radius:24px; overflow:hidden; }
+    .instructor-card { background:var(--surface2); padding:40px 36px; }
+    .instructor-badge { display:inline-block; padding:4px 10px; border-radius:40px; font-size:.65rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase; margin-bottom:1.5rem; }
+    .bio-badge{background:rgba(48,209,88,.12);color:var(--accent-bio);} .chem-badge{background:rgba(10,132,255,.12);color:var(--accent-chem);} .com-badge{background:rgba(191,90,242,.12);color:var(--accent-com);}
+    .instructor-name { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:600; margin-bottom:.3rem; }
+    .instructor-nick { font-size:.78rem; color:var(--text-tertiary); margin-bottom:1.5rem; }
+    .instructor-achv { list-style:none; display:flex; flex-direction:column; gap:8px; }
+    .instructor-achv li { font-size:.75rem; color:var(--text-secondary); line-height:1.5; padding-left:14px; position:relative; }
+    .instructor-achv li::before { content:'·'; position:absolute; left:0; color:var(--text-tertiary); }
+    #why { background:var(--bg); }
+    .why-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1px; max-width:960px; margin:3rem auto 0; border:1px solid var(--border); border-radius:20px; overflow:hidden; }
+    .why-item { background:var(--surface2); padding:36px 32px; }
+    .why-icon{font-size:1.8rem;margin-bottom:1rem;} .why-title{font-weight:600;font-size:.9rem;margin-bottom:.5rem;} .why-desc{font-size:.78rem;color:var(--text-secondary);line-height:1.65;}
+    .final-cta { background:var(--surface); padding:100px 5vw; text-align:center; }
+    .final-cta h2 { font-family:'Playfair Display',serif; font-size:clamp(2rem,4vw,3.2rem); font-weight:700; line-height:1.15; margin-bottom:1rem; }
+    .final-cta h2 em{font-style:normal;color:var(--gold);}
+    .final-cta p{color:var(--text-secondary);font-size:.95rem;margin-bottom:2.5rem;}
+    .final-price-note{font-size:.8rem;color:var(--warm);margin-top:.8rem;}
+    footer { background:var(--bg); border-top:1px solid var(--border); padding:40px 5vw; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
+    .footer-logo{font-family:'Playfair Display',serif;font-size:1rem;letter-spacing:.04em;}
+    .footer-logo span{color:var(--gold);}
+    .footer-copy{font-size:.72rem;color:var(--text-tertiary);}
+    .text-center{text-align:center;}
+    .divider{height:1px;background:var(--border);margin:0 5vw;}
+    .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+
+    /* MODAL */
+    .modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s;}
+    .modal-overlay.open{opacity:1;pointer-events:all;}
+    .modal{background:#0e0e0e;border:1px solid var(--border-hover);border-radius:24px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;transform:translateY(30px) scale(.97);transition:transform .3s;scrollbar-width:none;}
+    .modal-overlay.open .modal{transform:translateY(0) scale(1);}
+    .modal::-webkit-scrollbar{display:none;}
+    .modal-head{padding:28px 32px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;}
+    .modal-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:600;}
+    .modal-subtitle{font-size:.78rem;color:var(--text-tertiary);margin-top:3px;}
+    .modal-close{background:none;border:none;cursor:pointer;color:var(--text-tertiary);font-size:1.3rem;padding:4px;border-radius:8px;transition:color .2s;}
+    .modal-close:hover{color:var(--text);}
+    .modal-body{padding:24px 32px 32px;}
+    .modal-course-pick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px;}
+    .course-pill{padding:10px 6px;border-radius:12px;border:1.5px solid var(--border);cursor:pointer;text-align:center;font-size:.7rem;font-weight:600;color:var(--text-secondary);transition:all .2s;background:var(--surface2);}
+    .course-pill .pill-icon{font-size:1.2rem;display:block;margin-bottom:4px;}
+    .course-pill.sel-bio{border-color:var(--accent-bio);color:var(--accent-bio);background:rgba(48,209,88,.08);}
+    .course-pill.sel-chem{border-color:var(--accent-chem);color:var(--accent-chem);background:rgba(10,132,255,.08);}
+    .course-pill.sel-com{border-color:var(--accent-com);color:var(--accent-com);background:rgba(191,90,242,.08);}
+    .field-group{margin-bottom:16px;}
+    .field-group label{display:block;font-size:.72rem;font-weight:600;color:var(--text-secondary);margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase;}
+    .field-group input{width:100%;padding:11px 14px;background:#161616;border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:.88rem;font-family:'DM Sans',sans-serif;transition:border-color .2s;outline:none;}
+    .field-group input:focus{border-color:var(--border-hover);}
+    .field-group input.err{border-color:#ff453a;}
+    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .err-msg{font-size:.72rem;color:#ff453a;margin-top:5px;display:none;}
+    .err-msg.show{display:block;}
+    .price-summary{background:#0a0a0a;border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin:20px 0;}
+    .price-summary-row{display:flex;justify-content:space-between;font-size:.8rem;color:var(--text-secondary);margin-bottom:8px;}
+    .price-summary-total{display:flex;justify-content:space-between;border-top:1px solid var(--border);padding-top:10px;margin-top:4px;font-size:1.05rem;font-weight:700;}
+    .price-summary-total .amt{color:var(--gold);font-family:'Playfair Display',serif;}
+    .payment-label{font-size:.72rem;font-weight:600;color:var(--text-secondary);letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px;}
+    .qr-box{background:#fff;border-radius:16px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:14px;}
+    .qr-info{color:#000;font-size:.82rem;font-weight:600;text-align:center;}
+    .qr-info small{display:block;font-weight:400;font-size:.7rem;color:#555;margin-top:2px;}
+    .slip-upload{border:1.5px dashed var(--border-hover);border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:16px;}
+    .slip-upload:hover{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.02);}
+    .slip-upload.has-file{border-color:var(--accent-bio);background:rgba(48,209,88,.04);}
+    .slip-upload input{display:none;}
+    .slip-icon{font-size:1.6rem;margin-bottom:6px;}
+    .slip-text{font-size:.78rem;color:var(--text-secondary);}
+    .slip-text strong{color:var(--text);}
+    .btn-submit{width:100%;padding:14px;background:var(--text);color:#000;border:none;border-radius:12px;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+    .btn-submit:hover{background:#e0e0e0;}
+    .btn-submit:disabled{opacity:.4;cursor:not-allowed;}
+    .btn-submit.loading{background:#333;color:transparent;position:relative;}
+    .btn-submit.loading::after{content:'';position:absolute;top:50%;left:50%;width:18px;height:18px;border:2px solid #666;border-top-color:#fff;border-radius:50%;transform:translate(-50%,-50%);animation:spin .7s linear infinite;}
+    @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+    .success-state{text-align:center;padding:20px 0;}
+    .success-icon{font-size:3.5rem;margin-bottom:16px;}
+    .success-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:600;margin-bottom:8px;}
+    .success-desc{font-size:.82rem;color:var(--text-secondary);line-height:1.7;margin-bottom:20px;}
+    .success-ref{background:rgba(48,209,88,.08);border:1px solid rgba(48,209,88,.2);border-radius:10px;padding:12px 16px;font-size:.8rem;color:var(--accent-bio);font-weight:600;margin-bottom:20px;letter-spacing:.06em;}
+    .step-indicator{display:flex;gap:6px;align-items:center;font-size:.72rem;color:var(--text-tertiary);margin-bottom:16px;}
+    .step-dot{width:6px;height:6px;border-radius:50%;background:var(--border-hover);}
+    .step-dot.active{background:var(--gold);}
+    .api-banner{background:rgba(255,159,10,.08);border:1px solid rgba(255,159,10,.2);border-radius:10px;padding:10px 14px;font-size:.73rem;color:var(--warm);margin-bottom:14px;display:none;}
+    .api-banner.show{display:block;}
+    @media(max-width:768px){
+      .curriculum-wrap{grid-template-columns:1fr;}
+      .nav-links{display:none;}
+      .course-card{padding:32px 24px 28px;}
+      footer{flex-direction:column;text-align:center;}
+      .modal-body,.modal-head{padding-left:20px;padding-right:20px;}
+      .field-row{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  /* ═══════════════════════════════════════════════════
+     ⚙️  CONFIG — แก้ 2 ค่านี้หลัง deploy Apps Script
+     ═══════════════════════════════════════════════════ */
+  const SCRIPT_URL       = 'YOUR_APPS_SCRIPT_URL_HERE';  // วาง URL จาก Apps Script deployment
+  const PROMPTPAY_NUMBER = '0XX-XXX-XXXX';               // เบอร์ PromptPay ของคุณ
+  const PROMPTPAY_NAME   = 'ภวัต เศรษฐเสถียร';
+</script>
+
+<nav>
+  <div class="nav-logo">I<span>Need</span>POSN</div>
+  <div class="nav-links">
+    <a href="#courses">คอร์สเรียน</a>
+    <a href="#curriculum">เนื้อหา</a>
+    <a href="#instructors">ผู้สอน</a>
+    <a href="#why">ทำไมต้องเรา</a>
+    <a href="admin.html" class="nav-admin">⚙ Admin</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div style="position:relative;z-index:1">
+    <div class="hero-badge">สอวน. ค่าย 1 — ปีการศึกษา 2568</div>
+    <h1>เตรียมพร้อม<br/><em>สู่ความเป็นเลิศ</em></h1>
+    <p class="hero-sub">คอร์สเรียน สอวน. ครบ 3 สาขา — ชีววิทยา เคมี คอมพิวเตอร์<br/>สอนโดยรุ่นพี่ที่ผ่านสนามจริง เนื้อหาครบ กระชับ ใช้ได้จริง</p>
+    <div class="hero-cta">
+      <a href="#courses" class="btn-primary">ดูคอร์สทั้งหมด</a>
+      <a href="#curriculum" class="btn-ghost">ดูเนื้อหาคอร์ส</a>
+    </div>
+    <p class="hero-note">ราคาพิเศษ <strong>690 บาท</strong> ถึง 30 เมษายนนี้เท่านั้น</p>
+  </div>
+</section>
+
+<section id="courses">
+  <div class="courses-header reveal">
+    <div class="section-eyebrow">คอร์สทั้งหมด</div>
+    <div class="section-title">เลือกสาขาที่<em style="color:var(--gold)">ใช่สำหรับคุณ</em></div>
+  </div>
+  <div class="course-grid reveal">
+    <div class="course-card card-bio">
+      <div class="course-num">สอวน. ชีววิทยา — ค่าย 1</div>
+      <div class="course-icon">🧬</div>
+      <div class="course-name">สอวน. ชีวะ<br/>ค่าย 1</div>
+      <div class="course-subtitle">ครอบคลุมเนื้อหาตั้งแต่ Cell Biology ไปจนถึง Population Genetics พร้อมตะลุยโจทย์ 8 ปี</div>
+      <div class="tutor-row">
+        <div class="tutor-avatar">พร้อม</div>
+        <div class="tutor-info">
+          <div class="name">ภวัต เศรษฐเสถียร</div>
+          <div class="role">พี่พร้อม · สอวน.ชีววิทยา ม.นเรศวร</div>
+        </div>
+      </div>
+      <div class="course-tags"><span class="tag">3 เล่มเนื้อหา</span><span class="tag">ตะลุยโจทย์ 8 ปี</span><span class="tag">6+ ชั่วโมง</span><span class="tag">Cell Biology</span><span class="tag">Genetics</span></div>
+      <div class="price-row"><div class="price-current">฿690</div><div class="price-old">฿790</div></div>
+      <div class="price-deadline">⏳ ราคาพิเศษถึง 30 เมษายนนี้</div>
+      <button class="btn-card" onclick="openModal('bio')">สมัครเรียนเลย →</button>
+    </div>
+    <div class="course-card card-chem">
+      <div class="course-num">สอวน. เคมี — ค่าย 1</div>
+      <div class="course-icon">⚗️</div>
+      <div class="course-name">สอวน. เคมี<br/>ค่าย 1</div>
+      <div class="course-subtitle">เนื้อหาอัปเดตตามประกาศ สอวน. ล่าสุด ครอบคลุมทั้ง Atomic Structure, Chemical Bond, Stoichiometry และอื่น ๆ</div>
+      <div class="tutor-row">
+        <div class="tutor-avatar">หมีลี่</div>
+        <div class="tutor-info">
+          <div class="name">วรานนท์ เพียรพัฒนรัฐ</div>
+          <div class="role">พี่หมีลี่ · สอวน.เคมี ค่าย 2 ม.นเรศวร</div>
+        </div>
+      </div>
+      <div class="course-tags"><span class="tag">3 Part เนื้อหา</span><span class="tag">โจทย์โอลิมปิก ปี 60–68</span><span class="tag">เกินหลักสูตร สสวท.</span><span class="tag">NMR &amp; IR</span></div>
+      <div class="price-row"><div class="price-current">฿690</div><div class="price-old">฿790</div></div>
+      <div class="price-deadline">⏳ ราคาพิเศษถึง 30 เมษายนนี้</div>
+      <button class="btn-card" onclick="openModal('chem')">สมัครเรียนเลย →</button>
+    </div>
+    <div class="course-card card-com">
+      <div class="course-num">สอวน. คอมพิวเตอร์ — ค่าย 1</div>
+      <div class="course-icon">💻</div>
+      <div class="course-name">สอวน. คอม<br/>ค่าย 1</div>
+      <div class="course-subtitle">ครอบคลุม Math Section และ CS Section พร้อม Python Programming และ Algorithm ตะลุยโจทย์ 3 ปี</div>
+      <div class="tutor-row">
+        <div class="tutor-avatar">น้ำแข็ง</div>
+        <div class="tutor-info">
+          <div class="name">ศุภณัฐ กล้าจริง</div>
+          <div class="role">พี่น้ำแข็ง · สอวน.คอม ม.นเรศวร · พี่เลี้ยง ค่าย 1</div>
+        </div>
+      </div>
+      <div class="course-tags"><span class="tag">2 เล่มเนื้อหา</span><span class="tag">Python</span><span class="tag">Number Theory</span><span class="tag">Algorithm</span></div>
+      <div class="price-row"><div class="price-current">฿590</div></div>
+      <div class="price-deadline">🔥 Early Bird 10 คนแรกเหลือเพียง ฿590!</div>
+      <button class="btn-card" onclick="openModal('com')">สมัครเรียนเลย →</button>
+      <div class="special-offer">Early Bird ราคาพิเศษสำหรับ 10 คนแรก</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="curriculum">
+  <div class="text-center reveal" style="margin-bottom:3rem">
+    <div class="section-eyebrow">Curriculum</div>
+    <div class="section-title" style="max-width:100%;text-align:center">เนื้อหาที่<em style="color:var(--gold)">ครบถ้วน</em></div>
+  </div>
+  <div class="curriculum-wrap reveal">
+    <div style="border-right:1px solid var(--border)">
+      <div class="curr-header"><div class="curr-dot" style="background:var(--accent-bio)"></div><div class="curr-subject-title">ชีววิทยา</div></div>
+      <div class="curr-books">
+        <div class="curr-book"><div class="curr-book-name">เล่ม 1 · Fundamentum Vitae</div><div class="curr-topic"><span>Chemistry of Life</span><span>Microscope</span><span>Cell Structure</span><span>Cell Transport</span><span>Cell Division</span><span>Cellular Respiration</span><span>Protein Synthesis</span><span>Mutation</span><span>Mendelian Genetics</span><span>Non-Mendelian Inheritance</span><span>Pedigree Analysis</span><span>DNA Technology</span><span>Population Genetics</span></div></div>
+        <div class="curr-book"><div class="curr-book-name">เล่ม 2 · Organismus et Ambiens</div><div class="curr-topic"><span>Basic Taxonomy</span><span>Virus</span><span>Monera / Protista / Fungi</span><span>Kingdom Plantae &amp; Animalia</span><span>Ecosystem</span><span>Plant Structure &amp; Growth</span><span>Photosynthesis</span><span>Plant Reproduction &amp; Hormones</span></div></div>
+        <div class="curr-book"><div class="curr-book-name">เล่ม 3 · Systemata Corporis Humani</div><div class="curr-topic"><span>Digestive / Respiratory System</span><span>Circulatory / Lymphatic System</span><span>Immune / Excretory System</span><span>Nervous / Endocrine System</span><span>Reproductive / Skeletal System</span><span>Animal Behavior</span></div></div>
+      </div>
+    </div>
+    <div style="border-right:1px solid var(--border)">
+      <div class="curr-header"><div class="curr-dot" style="background:var(--accent-chem)"></div><div class="curr-subject-title">เคมี</div></div>
+      <div class="curr-books">
+        <div class="curr-book"><div class="curr-book-name">Part 1 · โครงสร้างอะตอมและตารางธาตุ</div><div class="curr-topic"><span>ปรับพื้นฐานเคมี</span><span>Safety &amp; Laboratory Skills</span><span>Atomic Structure</span><span>Periodic Table</span></div></div>
+        <div class="curr-book"><div class="curr-book-name">Part 2 · พันธะเคมี</div><div class="curr-topic"><span>Basic Chemical Bond</span><span>Advanced Chemical Bond</span><span>พันธะโลหะ</span><span>พันธะไอออนิก</span><span>พันธะโคเวเลนต์</span></div></div>
+        <div class="curr-book"><div class="curr-book-name">Part 3 · Stoichiometry &amp; Gases</div><div class="curr-topic"><span>Basic Stoichiometry</span><span>Solution</span><span>Advanced Stoichiometry</span><span>Gases</span></div></div>
+        <div class="curr-book"><div class="curr-book-name" style="color:var(--warm)">★ เกินหลักสูตร สสวท.</div><div class="curr-topic"><span>อ้างอิงโจทย์โอลิมปิก ปี 60–68</span><span>เนื้อหาค่าย 1 และ 2 บางส่วน</span><span>อัปเดตตามประกาศ สอวน. ล่าสุด</span></div></div>
+      </div>
+    </div>
+    <div>
+      <div class="curr-header"><div class="curr-dot" style="background:var(--accent-com)"></div><div class="curr-subject-title">คอมพิวเตอร์</div></div>
+      <div class="curr-books">
+        <div class="curr-book"><div class="curr-book-name">เล่ม 1 · Mathematics Section</div><div class="curr-topic"><span>Real Numbers</span><span>Elementary Number Theory</span><span>Relation and Function</span><span>Set &amp; Logic</span><span>Analytic Geometry</span><span>Circle, Point, Vector</span><span>Coordinate Geometry</span><span>Basic Counting &amp; Permutation</span></div></div>
+        <div class="curr-book"><div class="curr-book-name">เล่ม 1 · CS Section</div><div class="curr-topic"><span>Fundamental Python Programming</span><span>Analytical Thinking &amp; Problem Solving</span><span>Using Given Algorithms</span></div></div>
+        <div class="curr-book"><div class="curr-book-name">เล่ม 2 · POSN COM II</div><div class="curr-topic"><span>ตะลุยโจทย์ 3 ปี</span><span>โจทย์เน้นแต่ละบท</span><span>เนื้อหาขั้นสูงต่อยอด</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="instructors">
+  <div class="text-center reveal" style="margin-bottom:0">
+    <div class="section-eyebrow">ผู้สอน</div>
+    <div class="section-title" style="max-width:100%;text-align:center">สอนโดยรุ่นพี่<em style="color:var(--gold)">ที่ผ่านสนามจริง</em></div>
+  </div>
+  <div class="instructors-grid reveal">
+    <div class="instructor-card">
+      <div class="instructor-badge bio-badge">ชีววิทยา</div>
+      <div class="instructor-name">ภวัต เศรษฐเสถียร</div>
+      <div class="instructor-nick">พี่พร้อม</div>
+      <ul class="instructor-achv">
+        <li>สอวน.ชีววิทยา ศูนย์มหาวิทยาลัยนเรศวร</li>
+        <li>นักเรียนดีเด่น GPAX 4.00 (2566) และ 3.94 (2567)</li>
+        <li>เหรียญเงินแข่งขันหุ่นยนต์ระดับอาเซียน</li>
+        <li>เหรียญทองหุ่นยนต์บังคับมือระดับภูมิภาค</li>
+        <li>ตัวจริง วิศวกรรมชีวการแพทย์ KMITL</li>
+        <li>ตัวจริง วิทยาศาสตร์ชีววิทยา ม.นเรศวร</li>
+      </ul>
+    </div>
+    <div class="instructor-card" style="border-left:1px solid var(--border);border-right:1px solid var(--border)">
+      <div class="instructor-badge chem-badge">เคมี</div>
+      <div class="instructor-name">วรานนท์ เพียรพัฒนรัฐ</div>
+      <div class="instructor-nick">พี่หมีลี่</div>
+      <ul class="instructor-achv">
+        <li>สอวน.เคมี ค่าย 2 ม.นเรศวร (2567)</li>
+        <li>สำรองผู้แทนศูนย์ สอวน.เคมี ลำดับที่ 1</li>
+        <li>TBAT Chemistry 730 | A-Level เคมี 87.50</li>
+        <li>CU-ATS Chemistry 690</li>
+        <li>ประสบการณ์ห้องปฏิบัติการ NMR, IR, LC-MS</li>
+        <li>แข่งขันงานวิจัยระดับชาติ</li>
+      </ul>
+    </div>
+    <div class="instructor-card">
+      <div class="instructor-badge com-badge">คอมพิวเตอร์</div>
+      <div class="instructor-name">ศุภณัฐ กล้าจริง</div>
+      <div class="instructor-nick">พี่น้ำแข็ง</div>
+      <ul class="instructor-achv">
+        <li>สอวน.คอมพิวเตอร์ ศูนย์มหาวิทยาลัยนเรศวร</li>
+        <li>พี่เลี้ยง สอวน.คอมพิวเตอร์ ค่าย 1</li>
+        <li>ติดสัมภาษณ์ตัวจริง วิทยาการคอมพิวเตอร์ จุฬาฯ</li>
+        <li>ติดสัมภาษณ์ตัวจริง วิศวกรรมคอมพิวเตอร์ ม.เชียงใหม่</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="why">
+  <div class="text-center reveal">
+    <div class="section-eyebrow">ทำไมต้องเรา</div>
+    <div class="section-title" style="max-width:100%;text-align:center">ออกแบบมาเพื่อ<em style="color:var(--gold)">ผู้ที่จริงจัง</em></div>
+  </div>
+  <div class="why-grid reveal">
+    <div class="why-item"><div class="why-icon">🎯</div><div class="why-title">ตรงเนื้อหา สอวน.</div><div class="why-desc">เนื้อหาทุกหัวข้อออกแบบให้ตรงกับขอบเขต สอวน. ค่าย 1 โดยตรง ไม่เยิ่นเย้อ</div></div>
+    <div class="why-item" style="border-left:1px solid var(--border)"><div class="why-icon">📚</div><div class="why-title">เอกสารประกอบครบ</div><div class="why-desc">ได้รับเอกสารคุณภาพสูง ครบ กระชับ ใช้ได้จริง สามารถนำไปทบทวนเองได้ทันที</div></div>
+    <div class="why-item" style="border-left:1px solid var(--border)"><div class="why-icon">🏆</div><div class="why-title">สอนโดยผู้ผ่านจริง</div><div class="why-desc">ทุกสาขาสอนโดยรุ่นพี่ที่ผ่านการสอบ สอวน. มาแล้ว เข้าใจจุดยากและวิธีเตรียมตัว</div></div>
+    <div class="why-item" style="border-left:1px solid var(--border)"><div class="why-icon">💡</div><div class="why-title">ตะลุยโจทย์ย้อนหลัง</div><div class="why-desc">ฝึกทำโจทย์จากข้อสอบจริงหลายปี เพื่อให้คุ้นเคยรูปแบบและระดับความยาก</div></div>
+  </div>
+</section>
+
+<div class="final-cta">
+  <h2>พร้อมแล้วใช่ไหม?<br/>เริ่มต้น<em>วันนี้</em></h2>
+  <p>ราคาพิเศษยังเปิดอยู่ อย่าพลาดโอกาสนี้</p>
+  <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+    <a href="#courses" class="btn-primary">ดูคอร์สทั้งหมด</a>
+    <a href="#instructors" class="btn-ghost">รู้จักผู้สอน</a>
+  </div>
+  <div class="final-price-note">⏳ ราคา 690 บาท ถึง 30 เมษายนนี้เท่านั้น · จากนั้นปรับเป็น 790 บาท</div>
+</div>
+
+<footer>
+  <div class="footer-logo">I<span>Need</span>POSN</div>
+  <div class="footer-copy">© 2568 INeedPOSN · สงวนลิขสิทธิ์</div>
+</footer>
+
+<!-- PURCHASE MODAL -->
+<div class="modal-overlay" id="purchaseModal">
+  <div class="modal" id="modalBox">
+    <div class="modal-head">
+      <div><div class="modal-title" id="modalTitle">สมัครเรียน</div><div class="modal-subtitle" id="modalSub">กรอกข้อมูลเพื่อสมัครคอร์ส</div></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- Step 1 -->
+      <div id="s1">
+        <div class="step-indicator"><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div><span style="margin-left:6px">ขั้นตอนที่ 1 — ข้อมูลผู้สมัคร</span></div>
+        <div class="api-banner" id="apiBanner">⚠️ ยังไม่ได้ตั้งค่า SCRIPT_URL — ออเดอร์จะถูกเก็บไว้ใน browser เท่านั้น ไม่ถึง Google Sheet</div>
+        <div style="margin-bottom:16px">
+          <div class="payment-label">เลือกคอร์สที่ต้องการ</div>
+          <div class="modal-course-pick">
+            <div class="course-pill" id="pill-bio" onclick="selectCourse('bio')"><span class="pill-icon">🧬</span>ชีววิทยา</div>
+            <div class="course-pill" id="pill-chem" onclick="selectCourse('chem')"><span class="pill-icon">⚗️</span>เคมี</div>
+            <div class="course-pill" id="pill-com" onclick="selectCourse('com')"><span class="pill-icon">💻</span>คอมพิวเตอร์</div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group"><label>ชื่อจริง</label><input type="text" id="fName" placeholder="ชื่อ"><div class="err-msg" id="e-fName">กรุณากรอกชื่อ</div></div>
+          <div class="field-group"><label>นามสกุล</label><input type="text" id="fSurname" placeholder="นามสกุล"><div class="err-msg" id="e-fSurname">กรุณากรอกนามสกุล</div></div>
+        </div>
+        <div class="field-group"><label>อีเมล</label><input type="email" id="fEmail" placeholder="example@email.com"><div class="err-msg" id="e-fEmail">กรุณากรอกอีเมลที่ถูกต้อง</div></div>
+        <div class="field-row">
+          <div class="field-group"><label>เบอร์โทร</label><input type="tel" id="fPhone" placeholder="08x-xxx-xxxx"><div class="err-msg" id="e-fPhone">กรุณากรอกเบอร์โทร</div></div>
+          <div class="field-group"><label>LINE ID</label><input type="text" id="fLine" placeholder="@yourline"></div>
+        </div>
+        <div class="field-group"><label>โรงเรียน</label><input type="text" id="fSchool" placeholder="ชื่อโรงเรียน"></div>
+        <div class="price-summary">
+          <div class="price-summary-row"><span id="sName">— เลือกคอร์สด้านบน —</span><span id="sOrig">฿—</span></div>
+          <div class="price-summary-row"><span>ส่วนลดพิเศษ</span><span id="sDisc" style="color:var(--accent-bio)">฿—</span></div>
+          <div class="price-summary-total"><span>ยอดชำระ</span><span class="amt" id="sTotal">฿—</span></div>
+        </div>
+        <button class="btn-submit" onclick="goStep2()">ถัดไป — ชำระเงิน →</button>
+      </div>
+      <!-- Step 2 -->
+      <div id="s2" style="display:none">
+        <div class="step-indicator"><div class="step-dot"></div><div class="step-dot active"></div><div class="step-dot"></div><span style="margin-left:6px">ขั้นตอนที่ 2 — ชำระเงิน</span></div>
+        <div class="payment-label">ชำระผ่าน PromptPay</div>
+        <div class="qr-box">
+          <!-- ใส่รูป QR จริงของคุณโดยเปลี่ยน src ด้านล่าง -->
+          <!-- <img src="qr.png" alt="QR PromptPay" style="width:160px;border-radius:8px"> -->
+          <svg width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg"><rect width="160" height="160" fill="white"/><rect x="10" y="10" width="50" height="50" rx="4" fill="none" stroke="#000" stroke-width="4"/><rect x="20" y="20" width="30" height="30" rx="2" fill="#000"/><rect x="100" y="10" width="50" height="50" rx="4" fill="none" stroke="#000" stroke-width="4"/><rect x="110" y="20" width="30" height="30" rx="2" fill="#000"/><rect x="10" y="100" width="50" height="50" rx="4" fill="none" stroke="#000" stroke-width="4"/><rect x="20" y="110" width="30" height="30" rx="2" fill="#000"/><g fill="#000"><rect x="70" y="10" width="8" height="8"/><rect x="82" y="10" width="8" height="8"/><rect x="70" y="22" width="8" height="8"/><rect x="82" y="34" width="8" height="8"/><rect x="70" y="46" width="8" height="8"/><rect x="82" y="46" width="8" height="8"/><rect x="100" y="70" width="8" height="8"/><rect x="112" y="70" width="8" height="8"/><rect x="124" y="70" width="8" height="8"/><rect x="136" y="70" width="8" height="8"/><rect x="148" y="70" width="8" height="8"/><rect x="70" y="70" width="8" height="8"/><rect x="70" y="82" width="8" height="8"/><rect x="82" y="82" width="8" height="8"/><rect x="70" y="94" width="8" height="8"/><rect x="82" y="106" width="8" height="8"/><rect x="70" y="118" width="8" height="8"/><rect x="82" y="130" width="8" height="8"/><rect x="70" y="142" width="8" height="8"/><rect x="100" y="82" width="8" height="8"/><rect x="112" y="94" width="8" height="8"/><rect x="124" y="82" width="8" height="8"/><rect x="136" y="94" width="8" height="8"/><rect x="148" y="82" width="8" height="8"/><rect x="112" y="106" width="8" height="8"/><rect x="136" y="106" width="8" height="8"/><rect x="100" y="118" width="8" height="8"/><rect x="124" y="118" width="8" height="8"/><rect x="148" y="118" width="8" height="8"/><rect x="100" y="130" width="8" height="8"/><rect x="112" y="130" width="8" height="8"/><rect x="136" y="130" width="8" height="8"/><rect x="148" y="142" width="8" height="8"/><rect x="100" y="142" width="8" height="8"/><rect x="124" y="142" width="8" height="8"/></g></svg>
+          <div class="qr-info">
+            PromptPay: <strong id="qrNum"></strong>
+            <small>ชื่อบัญชี: <span id="qrName"></span></small>
+            <small id="qrAmt" style="color:#0055cc;font-weight:700;font-size:.85rem">฿690</small>
+          </div>
+        </div>
+        <div class="payment-label">แนบสลิปการโอนเงิน</div>
+        <div class="slip-upload" id="slipZone" onclick="document.getElementById('slipFile').click()">
+          <input type="file" id="slipFile" accept="image/*" onchange="handleSlip(this)">
+          <div class="slip-icon">📎</div>
+          <div class="slip-text" id="slipTxt"><strong>คลิกเพื่อเลือกไฟล์</strong><br/>หรือลากไฟล์มาวางที่นี่ · JPG, PNG</div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button class="btn-ghost" style="flex:1;padding:13px;border-radius:12px;font-size:.85rem;font-weight:600;cursor:pointer" onclick="goStep(1)">← ย้อนกลับ</button>
+          <button class="btn-submit" style="flex:2" id="submitBtn" onclick="submitOrder()">ยืนยันการสมัคร ✓</button>
+        </div>
+      </div>
+      <!-- Step 3 -->
+      <div id="s3" style="display:none">
+        <div class="success-state">
+          <div class="success-icon">🎉</div>
+          <div class="success-title">สมัครสำเร็จแล้ว!</div>
+          <div class="success-desc">ขอบคุณที่สมัครเรียนกับ INeedPOSN<br/>ทีมงานจะตรวจสอบสลิปและส่งลิงก์เข้าคอร์สให้ทาง LINE ภายใน 24 ชั่วโมง</div>
+          <div class="success-ref" id="orderRef">ORDER #INP-XXXXXX</div>
+          <button class="btn-primary" style="width:100%" onclick="closeModal()">กลับหน้าหลัก</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Scroll reveal
+  new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.1,rootMargin:'0px 0px -40px 0px'})
+    .observe(...document.querySelectorAll('.reveal')) || document.querySelectorAll('.reveal').forEach(el=>new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.1}).observe(el));
+
+  // Init PromptPay display
+  document.getElementById('qrNum').textContent  = PROMPTPAY_NUMBER;
+  document.getElementById('qrName').textContent = PROMPTPAY_NAME;
+
+  // Show banner if not configured
+  if(!SCRIPT_URL||SCRIPT_URL==='YOUR_APPS_SCRIPT_URL_HERE')
+    document.getElementById('apiBanner').classList.add('show');
+
+  const COURSES={bio:{n:'สอวน. ชีวะ ค่าย 1',p:690,o:790},chem:{n:'สอวน. เคมี ค่าย 1',p:690,o:790},com:{n:'สอวน. คอม ค่าย 1',p:590,o:690}};
+  let selC=null, slipData=null;
+
+  function openModal(c){document.getElementById('purchaseModal').classList.add('open');document.body.style.overflow='hidden';goStep(1);if(c)selectCourse(c);}
+  function closeModal(){document.getElementById('purchaseModal').classList.remove('open');document.body.style.overflow='';resetModal();}
+  function resetModal(){
+    selC=null;slipData=null;
+    ['fName','fSurname','fEmail','fPhone','fLine','fSchool'].forEach(id=>{const el=document.getElementById(id);if(el){el.value='';el.classList.remove('err');}});
+    document.querySelectorAll('.course-pill').forEach(p=>p.className='course-pill');
+    document.getElementById('slipZone').classList.remove('has-file');
+    document.getElementById('slipTxt').innerHTML='<strong>คลิกเพื่อเลือกไฟล์</strong><br/>หรือลากไฟล์มาวางที่นี่ · JPG, PNG';
+    updateSum();
+  }
+  function goStep(n){
+    [1,2,3].forEach(i=>document.getElementById('s'+i).style.display=i===n?'block':'none');
+    const T={1:'สมัครเรียน',2:'ชำระเงิน',3:'เสร็จสิ้น'};
+    const S={1:'กรอกข้อมูลเพื่อสมัครคอร์ส',2:'สแกน QR แล้วแนบสลิป',3:'การสมัครเสร็จสมบูรณ์'};
+    document.getElementById('modalTitle').textContent=T[n];
+    document.getElementById('modalSub').textContent=S[n];
+    document.getElementById('modalBox').scrollTop=0;
+  }
+  function selectCourse(c){
+    selC=c;
+    document.querySelectorAll('.course-pill').forEach(p=>p.className='course-pill');
+    document.getElementById('pill-'+c).classList.add('sel-'+c);
+    updateSum();
+  }
+  function updateSum(){
+    if(!selC){['sName','sOrig','sDisc','sTotal'].forEach(id=>document.getElementById(id).textContent='฿—');document.getElementById('sName').textContent='— เลือกคอร์สด้านบน —';return;}
+    const c=COURSES[selC];
+    document.getElementById('sName').textContent=c.n;
+    document.getElementById('sOrig').textContent='฿'+c.o.toLocaleString();
+    document.getElementById('sDisc').textContent='-฿'+(c.o-c.p);
+    document.getElementById('sTotal').textContent='฿'+c.p.toLocaleString();
+    document.getElementById('qrAmt').textContent='฿'+c.p.toLocaleString();
+  }
+  function validate(){
+    let ok=true;
+    [{id:'fName',f:v=>v.trim().length>0,e:'e-fName'},
+     {id:'fSurname',f:v=>v.trim().length>0,e:'e-fSurname'},
+     {id:'fEmail',f:v=>/^[^@]+@[^@]+\.[^@]+$/.test(v),e:'e-fEmail'},
+     {id:'fPhone',f:v=>v.replace(/\D/g,'').length>=9,e:'e-fPhone'}
+    ].forEach(({id,f,e})=>{
+      const el=document.getElementById(id),er=document.getElementById(e);
+      if(!f(el.value)){el.classList.add('err');er.classList.add('show');ok=false;}
+      else{el.classList.remove('err');er.classList.remove('show');}
+    });
+    if(!selC){alert('กรุณาเลือกคอร์สที่ต้องการสมัคร');ok=false;}
+    return ok;
+  }
+  function goStep2(){if(validate())goStep(2);}
+
+  // Compress image (max 800px, jpeg 0.72)
+  function compress(file,cb){
+    const img=new Image(),r=new FileReader();
+    r.onload=e=>{img.onload=()=>{
+      const M=800;let{width:w,height:h}=img;
+      if(w>M||h>M){if(w>h){h=Math.round(h*M/w);w=M;}else{w=Math.round(w*M/h);h=M;}}
+      const cv=document.createElement('canvas');cv.width=w;cv.height=h;
+      cv.getContext('2d').drawImage(img,0,0,w,h);
+      cb(cv.toDataURL('image/jpeg',.72));
+    };img.src=e.target.result;};r.readAsDataURL(file);
+  }
+  function handleSlip(inp){
+    if(!inp.files[0])return;
+    compress(inp.files[0],d=>{
+      slipData=d;
+      document.getElementById('slipZone').classList.add('has-file');
+      document.getElementById('slipTxt').innerHTML=`<strong>✓ ${inp.files[0].name}</strong><br/><span style="color:var(--accent-bio)">ไฟล์พร้อมแนบ</span>`;
+    });
+  }
+  // Drag & drop
+  const sz=document.getElementById('slipZone');
+  sz.addEventListener('dragover',e=>{e.preventDefault();sz.style.borderColor='rgba(255,255,255,.5)';});
+  sz.addEventListener('dragleave',()=>sz.style.borderColor='');
+  sz.addEventListener('drop',e=>{e.preventDefault();sz.style.borderColor='';const f=e.dataTransfer.files[0];if(f&&f.type.startsWith('image/')){compress(f,d=>{slipData=d;sz.classList.add('has-file');document.getElementById('slipTxt').innerHTML=`<strong>✓ ${f.name}</strong><br/><span style="color:var(--accent-bio)">ไฟล์พร้อมแนบ</span>`;});}});
+
+  async function submitOrder(){
+    if(!slipData){alert('กรุณาแนบสลิปการโอนเงิน');return;}
+    const btn=document.getElementById('submitBtn');
+    btn.classList.add('loading');btn.disabled=true;
+
+    const order={
+      id:'INP-'+Date.now().toString().slice(-6)+Math.floor(Math.random()*100),
+      timestamp:new Date().toISOString(),
+      course:COURSES[selC].n, courseKey:selC, price:COURSES[selC].p,
+      name:document.getElementById('fName').value.trim()+' '+document.getElementById('fSurname').value.trim(),
+      email:document.getElementById('fEmail').value.trim(),
+      phone:document.getElementById('fPhone').value.trim(),
+      line:document.getElementById('fLine').value.trim(),
+      school:document.getElementById('fSchool').value.trim(),
+      slip:slipData, status:'pending',
+    };
+
+    // 1) ส่งไป Google Apps Script
+    if(SCRIPT_URL&&SCRIPT_URL!=='YOUR_APPS_SCRIPT_URL_HERE'){
+      try{
+        await fetch(SCRIPT_URL,{
+          method:'POST', mode:'no-cors',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({action:'create_order',order}),
+        });
+      }catch(err){console.warn('Apps Script error:',err);}
+    }
+
+    // 2) Backup ไว้ใน localStorage (admin.html อ่านได้เสมอ)
+    const local=JSON.parse(localStorage.getItem('inp_orders')||'[]');
+    local.unshift(order);
+    localStorage.setItem('inp_orders',JSON.stringify(local.slice(0,200)));
+
+    setTimeout(()=>{
+      btn.classList.remove('loading');btn.disabled=false;
+      document.getElementById('orderRef').textContent='ORDER #'+order.id;
+      goStep(3);
+    },900);
+  }
+
+  document.getElementById('purchaseModal').addEventListener('click',e=>{if(e.target===document.getElementById('purchaseModal'))closeModal();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+  // Observe all reveal elements
+  document.querySelectorAll('.reveal').forEach(el=>{
+    new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:.1,rootMargin:'0px 0px -40px 0px'}).observe(el);
+  });
+</script>
+</body>
+</html>
